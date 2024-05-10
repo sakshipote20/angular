@@ -1,0 +1,445 @@
+npm install -g @angular/cli@latest
+ng new proj --no-standalone
+npm install bootstrap 
+
+
+app routing ts
+
+
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { RegisterpageComponent } from './registerpage/registerpage.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { DisplaypageComponent } from './displaypage/displaypage.component';
+import { LoginpageComponent } from './loginpage/loginpage.component';
+
+const routes: Routes = [
+  {path:"register", component:RegisterpageComponent},
+  {path:"login", component:LoginpageComponent},
+  {path:"display", component:DisplaypageComponent},
+  {path:"", component:HomepageComponent},
+
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+
+
+app.component.html
+
+<app-navbar></app-navbar>
+<router-outlet></router-outlet>
+
+
+
+
+
+ng generate component [name]
+
+
+
+
+
+
+
+
+
+
+
+
+navbar.component.html
+
+
+<nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" style="color:rgb(19, 95, 226)">Welcome</a>
+        <button class="btn btn-primary" type="submit" (click)="goBack()">back</button>
+    </div>
+  </nav>
+
+
+navbar.component.ts
+
+import { Component } from '@angular/core';
+import {Router} from '@angular/router'
+
+@Component({
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.css'
+})
+export class NavbarComponent {
+  constructor(private router:Router){
+
+  }
+  goBack (){
+    this.router.navigate(['/'])
+  }
+
+}
+
+home.html
+
+
+
+
+<div class="container">
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <button class="btn btn-outline-primary" type="button" (click)="register()">Register</button>
+        <button class="btn btn-primary" type="button" (click)="login()" >Login</button>
+      </div>
+</div>
+
+
+home ts
+
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-homepage',
+  templateUrl: './homepage.component.html',
+  styleUrl: './homepage.component.css'
+})
+export class HomepageComponent {
+  constructor(private router:Router){
+
+  }
+
+  register(){
+    this.router.navigate(['/register']);
+  }
+  login(){
+    this.router.navigate(['/login']);
+  }
+  // display(){
+  //   this.router.navigate(['/display']);
+  // }
+}
+
+
+register.com.html
+
+<h1 style="text-align: center; font-weight: bold;">Registration form</h1>
+
+
+<div class="container">
+<form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" >
+
+  <div class="mb-3">
+    <label for="firstName" class="form-label">First Name</label>
+    <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="userData.firstName" required>
+</div>
+
+<div class="mb-3">
+    <label for="lastName" class="form-label">Last Name</label>
+    <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="userData.lastName" required>
+</div>
+
+        <div class="mb-3">
+        <label>Select gender</label><br>
+          <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="male" name="gender" value="male" [(ngModel)]="userData.gender" required>
+          <label class="form-check-label" for="male" style="font-weight:400;">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="female" name="gender" value="female" [(ngModel)]="userData.gender" required>
+          <label class="form-check-label" for="female" style="font-weight:400;">Female</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="city" class="form-label">City</label>
+          <select class="form-select" id="city" name="city" [(ngModel)]="userData.city" required>
+              <option value="">Select City</option>
+              <option value="Pune">Pune</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Kolkata">Kolkata</option>
+          </select>
+      </div>
+
+
+
+  
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" minlength="6" [(ngModel)]="userData.username" required>
+            <div id="emailHelp" class="form-text">username should container atleast 6 characters.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="phone" class="form-label">Contact</label>
+            <input type="text" class="form-control" id="phone" name="phone" aria-describedby="emailHelp" [(ngModel)]="userData.phone" required>
+          </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input type="email" class="form-control " id="email" name="email" aria-describedby="emailHelp" required [(ngModel)]="userData.email" required>
+      <div id="emailHelp" class="form-text">Please enter valid email.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control " id="password" name="password" [(ngModel)]="userData.password" required>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+</div>
+
+
+
+registerpage.ts
+
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-registerpage',
+  templateUrl: './registerpage.component.html',
+  styleUrl: './registerpage.component.css'
+})
+export class RegisterpageComponent {
+  constructor(private router:Router){
+
+  }
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    
+  }
+ 
+ // user_record:any[]=[];
+
+  userData = { firstName:'', lastName:'', username: '',phone:'', email: '', password: '', gender:'', city:'' };
+
+  onSubmit(contactForm: any) {
+
+ let existingRecords = JSON.parse(localStorage.getItem('users') || '[]');
+
+ let user = existingRecords.find((user:any)=> user.email === this.userData.email);
+
+ if(user){
+  alert("User already exists")
+ }else{
+  existingRecords.push(this.userData);
+
+ 
+  localStorage.setItem('users', JSON.stringify(existingRecords));
+  this.router.navigate(['/login']);
+ }
+ 
+ 
+ 
+  }
+
+
+
+
+}
+
+
+
+login.html
+
+
+
+<div class="container">
+<form (ngSubmit)="onSubmit()" >
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" [(ngModel)]="email" required email>
+      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" name="password" [(ngModel)]="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+
+
+
+
+
+login.ts
+
+
+import { Component } from '@angular/core';
+import {Router} from '@angular/router'
+
+@Component({
+  selector: 'app-loginpage',
+  templateUrl: './loginpage.component.html',
+  styleUrl: './loginpage.component.css'
+})
+export class LoginpageComponent {
+  constructor(private router:Router){
+
+  }
+
+
+  email: string = '';
+  password: string = '';
+
+  onSubmit() {
+    // Retrieve 
+    let userData = JSON.parse(localStorage.getItem('users') || '[]');
+
+    // Find 
+    let user = userData.find((user: any) => user.email === this.email);
+
+    if (user && user.password === this.password) {
+      // Login successful
+      alert('Login successful');
+      this.router.navigate(['/display'])
+      // Redirect to dashboard or perform further actions
+    } else {
+      // Login failed
+      alert('Login failed. Please check your email and password.');
+    }
+  }
+
+
+}
+
+
+display.com
+
+
+<h2>Registered Users</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Fist name</th>
+      <th>Last name</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Gender</th>
+      <th>City</th>
+      <!-- Add more columns if needed -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.firstName }}</td>
+      <td>{{ user.lastName }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.phone }}</td>
+      <td>{{ user.gender }}</td>
+      <td>{{user.city}}</td>
+      <!-- Add more columns if needed -->
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+display.ts
+
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-displaypage',
+  templateUrl: './displaypage.component.html',
+  styleUrl: './displaypage.component.css'
+})
+export class DisplaypageComponent {
+  users: any[] = [];
+
+  ngOnInit() {
+    // Retrieve user data from local storage or from a service
+    this.users = JSON.parse(localStorage.getItem('users') || '[]');
+  }
+}
+
+
+
+
+display css
+
+
+/* Styles for the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+  }
+  
+  /* Styles for table header */
+  th {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  /* Styles for table rows */
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  tr:hover {
+    background-color: #ddd;
+  }
+  
+  /* Styles for table cells */
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  /* Styles for table header text */
+  th, td {
+    font-weight: bold;
+  }
+  
+  /* Styles for table heading */
+  h2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: rgb(19, 95, 226);
+    text-align: center;
+  }
+
+
+home css
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+
+}
+.btn{
+    font-weight: bold;
+}
+
+
+nav css
+.navbar-brand{
+    font-weight: bold;
+}
+
+
+
+
+
